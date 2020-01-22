@@ -30,6 +30,20 @@ public class StackedLayout extends LinearLayout {
     }
 
     public void push(View tile) {
+
+
+        if (!tiles.empty()) {
+            removeView (tiles.peek());
+        }
+        // takes the letter off so that the next letter can be seen.
+
+        tiles.push(tile);
+        //this line add the next letter unto the actual stack.
+
+        addView(tile);
+        //this line the next letter to be viewed unto the stack
+
+
         /**
          **
          **  YOUR CODE GOES HERE
@@ -39,6 +53,18 @@ public class StackedLayout extends LinearLayout {
 
     public View pop() {
         View popped = null;
+
+        if (!tiles.empty()) {
+            popped = tiles.pop();
+        }
+
+        removeView (popped);
+
+        if (!tiles.empty()) {
+            addView(tiles.peek());
+        }
+
+
         /**
          **
          **  YOUR CODE GOES HERE
@@ -56,6 +82,9 @@ public class StackedLayout extends LinearLayout {
     }
 
     public void clear() {
+        while (!tiles.empty())  {
+            tiles.pop();
+        }
         /**
          **
          **  YOUR CODE GOES HERE

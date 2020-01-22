@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> words = new ArrayList<>();
     private Random random = new Random();
     private StackedLayout stackedLayout;
+    private Stack<LetterTile> placedTiles = new Stack<LetterTile>();
     private String word1, word2;
 
     @Override
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     TextView messageBox = (TextView) findViewById(R.id.message_box);
                     messageBox.setText(word1 + " " + word2);
                 }
+                placedTiles.push(tile);
                 /**
                  **
                  **  YOUR CODE GOES HERE
@@ -147,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onStartGame(View view) {
         TextView messageBox = (TextView) findViewById(R.id.message_box);
         messageBox.setText("Game started");
+        ViewGroup word1LinearLayout = findViewById(R.id.word1);
+        ViewGroup word2LinearLayout = findViewById(R.id.word2);
+
+        word1LinearLayout.removeAllViews();
+        word2LinearLayout.removeAllViews();
+        stackedLayout.clear();
         /******  YOUR CODE GOES HERE   ****/
 
         // create two strings to hold two random words from the 'word1' and 'word2'word
@@ -183,13 +191,24 @@ public class MainActivity extends AppCompatActivity {
             mergedScramble = mergedScramble + word2.charAt(WrayonIndex++);
         }
 
-        messageBox.setText("word1 is " + word1 + ", word2 is " + word2 + ", scrambled is " + mergedScramble);
+        //messageBox.setText("word1 is " + word1 + ", word2 is " + word2 + ", scrambled is " + mergedScramble);
+        mergedIndex = (mergedScramble.length() -1);
+        while (mergedIndex >= 0 ) {
+            // ensures that merge scramble is not equal to 0
+            LetterTile list = new LetterTile(this,mergedScramble.charAt(mergedIndex--));
+            //reduces characters in mergedIndexd by 1
+            //creating a tile and pushing it in stacklayout
+            stackedLayout.push(list);
+        }
         /****** Your Code Goes Here ******/
 
         return true;
     }
 
     public boolean onUndo(View view) {
+        LetterTile tile1 = placedTiles.pop();
+        tile1.moveToViewGroup((ViewGroup) stackedLayout);
+
         /**
          **
          **  YOUR CODE GOES HERE
